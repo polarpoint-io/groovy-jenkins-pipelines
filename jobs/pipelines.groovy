@@ -1,7 +1,7 @@
 def gitHubCredentialsId = 'bainss-pat-github'
 
 def multiBranchpipelines = [
-        [repo: 'polarpoint-io/pol-hss-simple-springboot'],
+        [repo: 'polarpoint-io/spring-boot-service'],
 
 ]
 
@@ -25,7 +25,7 @@ multiBranchpipelines.each { pipeline ->
                         repoOwner(githubOrg)
                         id(buildName)
                         repository(githubRepoName)
-                        apiUri("https://github.pohzn.com/api/v3")
+                        apiUri("https://github.com/api/v3")
                         credentialsId(gitHubCredentialsId)
                         traits {
                             headWildcardFilter {
@@ -38,7 +38,7 @@ multiBranchpipelines.each { pipeline ->
 
                 buildStrategies {
                     ignoreCommitterStrategy {
-                        ignoredAuthors("jenkins@mycnets.com")
+                        ignoredAuthors("jenkins@local")
                         allowBuildIfNotExcludedAuthor(true)
                     }
                         //skip-initial-build(true)
@@ -109,7 +109,7 @@ multiBranchpipelines.each { pipeline ->
 
 pipelineJobs.each { job ->
     def (pipelineGithubOrg, pipelineGithubRepoName) = job.repo.split('/')
-    def pipelineGitHubUrl = "https://github.pohzn.com/${pipelineGithubOrg}/${pipelineGithubRepoName}"
+    def pipelineGitHubUrl = "https://github.com/${pipelineGithubOrg}/${pipelineGithubRepoName}"
     pipelineJob(pipelineGithubRepoName) {
         description("on GitHub: <a href=\"${pipelineGitHubUrl}\">${pipelineGitHubUrl}</a>")
         definition {
