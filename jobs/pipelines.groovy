@@ -22,7 +22,8 @@ multiBranchpipelines.each { pipeline ->
             branchSource {
                 source {
                     github {
-                         repositoryUrl(gitHubUrl)
+                        repositoryUrl(gitHubUrl)
+                        configuredByUrl(gitHubUrl)
                         repoOwner(githubOrg)
                         id(buildName)
                         repository(githubRepoName)
