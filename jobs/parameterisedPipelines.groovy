@@ -7,7 +7,7 @@ def polarpointAutomationJobs = [
 
 
 // freestyle pipelines
-bhAutomationJobs.each { job ->
+polarpointAutomationJobs.each { job ->
     def (pipelineGithubOrg, pipelineGithubRepoName) = job.repo.split('/')
     def pipelineGitHubUrl = "https://github.com/${pipelineGithubOrg}/${pipelineGithubRepoName}.git"
     pipelineJob(pipelineGithubRepoName) {
