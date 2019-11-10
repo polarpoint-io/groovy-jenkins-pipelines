@@ -12,7 +12,7 @@ def pipelineJobs = []
 
 multiBranchpipelines.each { pipeline ->
     def (githubOrg, githubRepoName) = pipeline.repo.split('/')
-    def gitHubUrl = "https://github.pohzn.com/${githubOrg}/${githubRepoName}"
+    def gitHubUrl = "https://github.com/${githubOrg}/${githubRepoName}"
     def buildName = (pipeline.buildName == null) ? "${githubOrg}--${githubRepoName}" : pipeline.buildName
 
     multibranchPipelineJob(buildName) {
@@ -22,6 +22,7 @@ multiBranchpipelines.each { pipeline ->
             branchSource {
                 source {
                     github {
+                         repositoryUrl(gitHubUrl)
                         repoOwner(githubOrg)
                         id(buildName)
                         repository(githubRepoName)
