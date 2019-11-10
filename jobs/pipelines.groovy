@@ -27,7 +27,7 @@ multiBranchpipelines.each { pipeline ->
                         repoOwner(githubOrg)
                         id(buildName)
                         repository(githubRepoName)
-                        apiUri("https://github.com/api/v3")
+                        apiUri("https://api.github.com")
                         credentialsId(gitHubCredentialsId)
                         traits {
                             headWildcardFilter {
