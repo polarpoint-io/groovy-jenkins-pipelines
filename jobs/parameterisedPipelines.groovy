@@ -1,83 +1,15 @@
-def gitHubCredentialsId = '43cee12e-c6be-41e5-b5c3-79e3c47c1292'
+def gitHubCredentialsId = 'bainss-pat-github'
 
-def hihAutomationJobs = [
-        [repo: 'hih/groovy-jenkins-java-api-integration-test']
+
+def polarpointAutomationJobs = [
+        [repo: 'polarpoint-io/groovy-jenkins-java-integration-tests']
 ]
-
-def bhAutomationJobs = [
-        [repo: 'bh/groovy-jenkins-java-automation-tests']
-]
-
-// freestyle pipelines
-hihAutomationJobs.each { job ->
-    def (pipelineGithubOrg, pipelineGithubRepoName) = job.repo.split('/')
-    def pipelineGitHubUrl = "https://github.pohzn.com/${pipelineGithubOrg}/${pipelineGithubRepoName}.git"
-    pipelineJob(pipelineGithubRepoName) {
-        description("on GitHub: <a href=\"${pipelineGitHubUrl}\">${pipelineGitHubUrl}</a>")
-        definition {
-            cpsScm {
-                scm {
-                    git {
-                        branch("development")
-                        remote {
-                            url(pipelineGitHubUrl)
-                            credentials(gitHubCredentialsId)
-                        }
-                    }
-                }
-                scriptPath("Jenkinsfile")
-            }
-
-        }
-
-        triggers {
-            scm('@midnight')
-        }
-
-        parameters {
-            stringParam {
-                name('HNGT_ENVIRONMENT')
-                defaultValue('tst')
-                description('Hngt environment')
-                trim(true)
-            }
-        }
-
-        parameters {
-            stringParam {
-                name('CERTIFICATE')
-                defaultValue('')
-                description('certificate')
-                trim(true)
-            }
-        }
-
-        parameters {
-            stringParam {
-                name('TESTSUITE')
-                defaultValue('')
-                description('Test Suite')
-                trim(true)
-            }
-        }
-
-        parameters {
-            stringParam {
-                name('GIT_BRANCH')
-                defaultValue('development')
-                description('Git Branch')
-                trim(true)
-            }
-        }
-
-    }
-}
 
 
 // freestyle pipelines
 bhAutomationJobs.each { job ->
     def (pipelineGithubOrg, pipelineGithubRepoName) = job.repo.split('/')
-    def pipelineGitHubUrl = "https://github.pohzn.com/${pipelineGithubOrg}/${pipelineGithubRepoName}.git"
+    def pipelineGitHubUrl = "https://github.com/${pipelineGithubOrg}/${pipelineGithubRepoName}.git"
     pipelineJob(pipelineGithubRepoName) {
         description("on GitHub: <a href=\"${pipelineGitHubUrl}\">${pipelineGitHubUrl}</a>")
         definition {
