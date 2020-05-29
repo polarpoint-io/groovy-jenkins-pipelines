@@ -1,0 +1,60 @@
+    #!groovy
+    # Seed Jenkins from the jobs and views directories 
+    
+    import hudson.model.*
+    import jenkins.model.*
+    import hudson.slaves.*
+    import javaposse.jobdsl.plugin.*
+    import hudson.plugins.git.*
+    import java.util.Collections
+    import java.util.List
+    import hudson.triggers.TimerTrigger
+    import java.util.logging.Logger
+    import java.util.logging.Level
+    import java.util.logging.Logger
+
+    Logger.getLogger("hudson.plugins.git.GitStatus").setLevel(Level.FINEST)
+    Logger.getLogger("hudson.security.csrf.CrumbFilter").setLevel(Level.FINEST)
+
+    Logger.global.info("[init.d] security setup")
+
+    def instance = Jenkins.getInstance()
+
+
+    Logger.global.info("[init.d] Seeding ...")
+
+
+    def jobName = 'seed-job'
+    def project = new FreeStyleProject(instance, jobName)
+
+    // Configure the SCM
+    // -----------------
+
+    def projectURL = "https://github.com/polarpoint-io/groovy-jenkins-pipelines.git"
+    // We are using a predefined user id (srv-jenkins). You can change it in the global config.
+    List<UserRemoteConfig> user = Collections.singletonList(new UserRemoteConfig(projectURL, '', '', 'github-access-token'))
+    List<BranchSpec> branches = Collections.singletonList(new BranchSpec("refs/heads/master"))
+    List<SubmoduleConfig> submodules = Collections.<SubmoduleConfig>emptyList();
+    def scm = new GitSCM(user, branches, false, submodules, null, null, null)
+    project.setScm(scm)
+
+    // Configure the Job DSL step
+    // -----------------
+
+    def jobDslBuildStep = new ExecuteDslScripts()
+    jobDslBuildStep.with {
+      additionalClasspath = "src/main/groovy"
+      ignoreExisting = false
+      lookupStrategy = LookupStrategy.JENKINS_ROOT
+      removedJobAction = RemovedJobAction.IGNORE
+      removedViewAction = RemovedViewAction.IGNORE
+      scriptText = ""
+      targets = "**/*.groovy"
+    }
+    project.getBuildersList().add(jobDslBuildStep)
+
+    project.addTrigger(new TimerTrigger("@midnight"))
+    project.save()
+    // project.scheduleBuild()
+    Logger.global.info("[init.d] Seeding done")
+    Jenkins.instance.reload()
