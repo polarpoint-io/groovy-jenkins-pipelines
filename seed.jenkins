@@ -31,8 +31,8 @@
     // -----------------
 
     def projectURL = "https://github.com/polarpoint-io/groovy-jenkins-pipelines.git"
-    // We are using a predefined user id (srv-jenkins). You can change it in the global config.
-    List<UserRemoteConfig> user = Collections.singletonList(new UserRemoteConfig(projectURL, '', '', 'github-access-token'))
+    // create a kubernetes secret containing with the name 'bainss-pat-github' and the token
+    List<UserRemoteConfig> user = Collections.singletonList(new UserRemoteConfig(projectURL, '', '', 'bainss-pat-github'))
     List<BranchSpec> branches = Collections.singletonList(new BranchSpec("refs/heads/master"))
     List<SubmoduleConfig> submodules = Collections.<SubmoduleConfig>emptyList();
     def scm = new GitSCM(user, branches, false, submodules, null, null, null)
