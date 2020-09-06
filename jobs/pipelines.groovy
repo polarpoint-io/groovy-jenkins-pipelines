@@ -1,4 +1,4 @@
-def gitHubCredentialsId = 'bainss-pat-github'
+def gitHubCredentialsId = 'github-pat-credentials'
 
 def multiBranchpipelines = [
         [repo: 'polarpoint-io/spring-boot-service'],
