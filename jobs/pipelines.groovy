@@ -83,9 +83,6 @@ multiBranchpipelines.each { pipeline ->
                 }
             }
         }
-        triggers {
-            periodic(720)
-        }
 
         orphanedItemStrategy {
             discardOldItems {
